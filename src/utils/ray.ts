@@ -1,4 +1,5 @@
 import { Color } from './ppmImg'
+import { hitSphere } from './sphere'
 import { Vec3 } from './vec3'
 
 export class Ray {
@@ -14,6 +15,12 @@ export class Ray {
 }
 
 export function rayColor(ray: Ray): Color {
+  // 球体
+  if (hitSphere(new Vec3({ x: 0, y: 0, z: -1 }), 0.5, ray)) {
+    return [195, 204, 41]
+  }
+
+  // 背景
   const unitRayDirection = ray.direction.unit
   const t = 0.5 * (unitRayDirection.y + 1)
   const white = new Vec3({ x: 1, y: 1, z: 1 })

@@ -38,11 +38,7 @@ export class Vec3 {
     })
   }
   dot(vec: Vec3) {
-    return new Vec3({
-      x: this.x * vec.x,
-      y: this.y * vec.y,
-      z: this.z * vec.z,
-    })
+    return this.x * vec.x + this.y * vec.y + this.z * vec.z
   }
   cross(vec: Vec3) {
     return new Vec3({

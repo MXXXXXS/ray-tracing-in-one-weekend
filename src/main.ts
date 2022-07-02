@@ -23,7 +23,7 @@ const lowerLeftCorner = cameraOrigin
 
 // 渲染
 
-for (let hIndex = 0; hIndex < imgH; hIndex++) {
+for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
   for (let wIndex = 0; wIndex < imgW; wIndex++) {
     const u = wIndex / (imgW - 1)
     const v = hIndex / (imgH - 1)

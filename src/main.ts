@@ -16,9 +16,9 @@ const word = new HittableList()
 word.add(
   new Sphere({ center: new Vec3({ x: -0.5, y: 0, z: -3 }), radius: 0.5 })
 )
-word.add(new Sphere({ center: new Vec3({ x: 0.5, y: -1, z: -3 }), radius: 1 }))
+word.add(new Sphere({ center: new Vec3({ x: 0.5, y: 1, z: -3 }), radius: 1 }))
 word.add(
-  new Sphere({ center: new Vec3({ x: 0, y: -101, z: -3 }), radius: 100 })
+  new Sphere({ center: new Vec3({ x: 0, y: -101, z: -10 }), radius: 100 })
 )
 
 // 相机
@@ -30,17 +30,28 @@ const maxDepth = 48
 
 for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
   for (let wIndex = 0; wIndex < imgW; wIndex++) {
-    let color: Color = [0, 0, 0]
+    let color = new Vec3({ x: 0, y: 0, z: 0 })
     for (let s = 0; s < samplesPerPixel; s++) {
       const u = (wIndex + Math.random()) / (imgW - 1)
       const v = (hIndex + Math.random()) / (imgH - 1)
       const ray = camera.getRay(u, v)
       const pixelColor = rayColor(ray, word, maxDepth)
-      color = pixelColor.map((c, i) => c + color[i]) as Color
+      color = pixelColor.plus(color)
     }
-    pixels.push(color.map((c) => Math.round(c / samplesPerPixel)) as Color)
+    pixels.push(
+      color
+        .multiply(1 / samplesPerPixel)
+        .power(0.5)
+        .multiply(255).toColor
+    )
   }
+  process.stdout.clearLine(0)
+  process.stdout.cursorTo(0)
+  process.stdout.write(
+    `Rendering ${Math.round(((imgH - hIndex - 1) / imgH) * 100)} %`
+  )
 }
+process.stdout.write('\n')
 
 const img = new PpmImg({
   w: imgW,

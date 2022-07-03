@@ -26,6 +26,13 @@ export class Vec3 {
       z: this.z * num,
     })
   }
+  power(num: number) {
+    return new Vec3({
+      x: this.x ** num,
+      y: this.y ** num,
+      z: this.z ** num,
+    })
+  }
   plus(vec: Vec3) {
     return new Vec3({
       x: this.x + vec.x,
@@ -60,11 +67,7 @@ export class Vec3 {
     return Math.sqrt(this.lengthSquared)
   }
   get toColor(): Color {
-    return [
-      Math.round(this.x * 255),
-      Math.round(this.y * 255),
-      Math.round(this.z * 255),
-    ]
+    return [Math.round(this.x), Math.round(this.y), Math.round(this.z)]
   }
 }
 

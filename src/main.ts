@@ -1,5 +1,7 @@
+import { HittableList } from './utils/hittable'
 import { Color, PpmImg } from './utils/ppmImg'
 import { Ray, rayColor } from './utils/ray'
+import { Sphere } from './utils/sphere'
 import { Vec3 } from './utils/vec3'
 
 // 输出图像
@@ -7,6 +9,13 @@ const aspectRatio = 16 / 9
 const imgW = 400
 const imgH = 400 / aspectRatio
 const pixels: Color[] = []
+
+// 世界
+const word = new HittableList()
+word.add(
+  new Sphere({ center: new Vec3({ x: -0.5, y: 0, z: -3 }), radius: 0.5 })
+)
+word.add(new Sphere({ center: new Vec3({ x: 0.5, y: -1, z: -3 }), radius: 1 }))
 
 // 相机
 const vw = 2
@@ -33,7 +42,7 @@ for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
         horizontal.multiply(u).plus(vertical.multiply(v).minus(cameraOrigin))
       ),
     })
-    const pixelColor = rayColor(ray)
+    const pixelColor = rayColor(ray, word)
     pixels.push(pixelColor)
   }
 }

@@ -25,8 +25,8 @@ word.add(
 const camera = new Camera({ aspectRatio })
 
 // 渲染
-const samplesPerPixel = 60
-const maxDepth = 50
+const samplesPerPixel = 40
+const maxDepth = 40
 
 for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
   for (let wIndex = 0; wIndex < imgW; wIndex++) {

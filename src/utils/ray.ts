@@ -17,10 +17,10 @@ export class Ray {
 export function rayColor(ray: Ray, world: HittableList, depth = 8): Vec3 {
   if (depth <= 0) return new Vec3({ x: 0, y: 0, z: 0 })
   // 世界
-  const rec = world.hit({ ray, tMin: 0, tMax: Infinity })
+  const rec = world.hit({ ray, tMin: 0.0000001, tMax: Infinity })
   if (rec) {
     // 漫反射光线
-    const target = rec.p.plus(rec.normal).plus(randomInUnitSphere())
+    const target = rec.p.plus(rec.normal).plus(randomInUnitSphere().unit)
     return rayColor(
       new Ray({ origin: rec.p, direction: target.minus(rec.p) }),
       world,

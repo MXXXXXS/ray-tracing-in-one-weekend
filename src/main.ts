@@ -7,8 +7,8 @@ import { Vec3 } from './utils/vec3'
 
 // 输出图像
 const aspectRatio = 16 / 9
-const imgW = 400
-const imgH = 400 / aspectRatio
+const imgW = 1280
+const imgH = imgW / aspectRatio
 const pixels: Color[] = []
 
 // 世界
@@ -17,12 +17,16 @@ word.add(
   new Sphere({ center: new Vec3({ x: -0.5, y: 0, z: -3 }), radius: 0.5 })
 )
 word.add(new Sphere({ center: new Vec3({ x: 0.5, y: -1, z: -3 }), radius: 1 }))
+word.add(
+  new Sphere({ center: new Vec3({ x: 0, y: -101, z: -3 }), radius: 100 })
+)
 
 // 相机
 const camera = new Camera({ aspectRatio })
 
 // 渲染
-const samplesPerPixel = 100
+const samplesPerPixel = 10
+const maxDepth = 48
 
 for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
   for (let wIndex = 0; wIndex < imgW; wIndex++) {
@@ -31,7 +35,7 @@ for (let hIndex = imgH - 1; hIndex >= 0; hIndex--) {
       const u = (wIndex + Math.random()) / (imgW - 1)
       const v = (hIndex + Math.random()) / (imgH - 1)
       const ray = camera.getRay(u, v)
-      const pixelColor = rayColor(ray, word)
+      const pixelColor = rayColor(ray, word, maxDepth)
       color = pixelColor.map((c, i) => c + color[i]) as Color
     }
     pixels.push(color.map((c) => Math.round(c / samplesPerPixel)) as Color)

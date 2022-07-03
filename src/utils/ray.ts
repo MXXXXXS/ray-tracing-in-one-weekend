@@ -1,6 +1,6 @@
 import { HittableList } from './hittable'
 import { Color } from './ppmImg'
-import { Vec3 } from './vec3'
+import { randomInUnitSphere, Vec3 } from './vec3'
 
 export class Ray {
   origin: Vec3
@@ -14,11 +14,18 @@ export class Ray {
   }
 }
 
-export function rayColor(ray: Ray, world: HittableList): Color {
+export function rayColor(ray: Ray, world: HittableList, depth = 8): Color {
+  if (depth <= 0) return [0, 0, 0]
   // 世界
   const rec = world.hit({ ray, tMin: 0, tMax: Infinity })
   if (rec) {
-    return rec.normal.add(1).multiply(0.5).toColor
+    // 漫反射光线
+    const target = rec.p.plus(rec.normal).plus(randomInUnitSphere())
+    return rayColor(
+      new Ray({ origin: rec.p, direction: target.minus(rec.p) }),
+      world,
+      depth - 1
+    ).map((c) => c * 0.5) as Color
   }
   // 背景
   const unitRayDirection = ray.direction.unit

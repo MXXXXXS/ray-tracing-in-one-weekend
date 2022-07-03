@@ -9,6 +9,9 @@ export class Vec3 {
     this.y = y
     this.z = z
   }
+  static random() {
+    return new Vec3({ x: Math.random(), y: Math.random(), z: Math.random() })
+  }
   add(num: number) {
     return new Vec3({
       x: this.x + num,
@@ -62,5 +65,14 @@ export class Vec3 {
       Math.round(this.y * 255),
       Math.round(this.z * 255),
     ]
+  }
+}
+
+export const randomInUnitSphere = (): Vec3 => {
+  while (true) {
+    const p = Vec3.random()
+    if (p.length < 1) {
+      return p
+    }
   }
 }
